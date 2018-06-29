@@ -67,7 +67,7 @@ route('/panel/', function() {
     while($row = $queryW->fetch_assoc()) {
         $works[] = $row;
     }
-    render('p-index.html', array(
+    render('panel/index.html', array(
         'books' => $books,
         'works' => $works
     ));
@@ -75,7 +75,7 @@ route('/panel/', function() {
 
 route('/panel/gallery/', function() {
     require_logged();
-    render('p-gallery.html',array(
+    render('panel/gallery.html',array(
         'images' => array_slice(scandir('static/uploaded/'),2)
     ));
 });
@@ -101,7 +101,7 @@ route('/panel/gallery/delete/:name', function($args) {
         }
         redirect('/panel/gallery/');
     } else {
-        render('p-img-confirm.html', array('name'=>urldecode($args['name'])));
+        render('panel/img-confirm.html', array('name'=>urldecode($args['name'])));
     }
 });
 
@@ -117,7 +117,7 @@ route('/panel/add/:type', function($args) {
             redirect('/panel/');
         }
     } else {
-        render('p-add.html',array(
+        render('panel/add.html',array(
             'type' => $args['type'],
             'type_c' => ucfirst($args['type'])
         ));
@@ -142,7 +142,7 @@ route('/panel/edit/:id', function($args) {
         if (isset($_POST['content'])) {
             $content = $_POST['content'];
         }
-        render('p-edit.html',array(
+        render('panel/edit.html',array(
             'id' => $row['id'],
             'name' => $row['name'],
             'content' => $content
@@ -160,7 +160,7 @@ route('/panel/preview', function() {
         $md = $parser->textExtended($_POST['content']);
         $query = $db->query('SELECT * FROM `storage` WHERE `id` = '.$_POST['id']);
         if ($row = $query->fetch_assoc()) {
-            render('p-preview.html', array(
+            render('panel/preview.html', array(
                 'id' => $row['id'],
                 'title'=> $row['name'],
                 'original'=> $_POST['content'],
@@ -183,7 +183,7 @@ route('/panel/delete/:id', function($args) {
     } else {
         $query = $db->query('SELECT * FROM `storage` WHERE `id` = '.$args['id']);
         if ($row = $query->fetch_assoc()) {
-            render('p-confirm.html', array('element'=>$row));
+            render('panel/confirm.html', array('element'=>$row));
         } else {
             redirect('/panel/');
         }
