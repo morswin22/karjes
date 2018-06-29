@@ -1,0 +1,8 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h4>Delete {{element.name}}?</h4>
+<form method="POST" class="mb-3">
+  <a class="btn btn-secondary" href="/panel/">Cancel</a> <button type="submit" class="btn btn-danger" name="confirm">Delete</button>
+</form>
+{% endblock %}

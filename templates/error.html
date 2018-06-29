@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h1>Error {{code}}</h1>
+{% if code == 403 %} 
+<h3>To see this content you must sign in</h3>
+<form class="mt-2" method="POST" action="/panel/login/">
+    <input name="redir" type="text" hidden id="redir">
+  <div class="form-group">
+    <label for="email">Email address</label>
+    <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="Enter email">
+    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+  </div>
+  <div class="form-group">
+    <label for="pass">Password</label>
+    <input type="password" class="form-control" id="pass" name="pass" placeholder="Password">
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<script>$('#redir').val(window.location.href)</script>
+{% else %}
+<h3>Return to your previous page <a href="{{previous_page}}">{{previous_page}}</a></h3>
+{% endif %}
+{% endblock %}

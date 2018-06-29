@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/css/dnd.css">
+<script src="/static/js/dnd.js"></script>
+{% endblock %}
+
+{% block body %}
+<form method="POST" class="mb-3">
+  <div class="form-group">
+    <label for="name">{{type_c}}'s name</label>
+    <input type="text" class="form-control" id="name" name="name" placeholder="Enter name">
+  </div>
+  <div class="form-group">
+    <label for="link">Image link</label>
+    <input type="text" class="form-control" id="link" name="image" placeholder="http://karolinajeske.com/static/uploaded/...">
+  </div>
+  <button id="upload_imgs" type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#uploadModal">
+    Upload images
+  </button>
+  <button type="submit" class="btn btn-primary" onclick="$(window).unbind('beforeunload')">Submit</button>
+</form>
+
+<a href="/panel/gallery/" target="_BLANK">Open image gallery</a>
+
+<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+    <div class="modal-header">
+    <h5 class="modal-title" id="uploadModalLabel">Drag and Drop Files Here</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body" id="drop-area">
+        <div id="progresses" style="min-height: 250px; background-repeat: no-repeat;background-position: center; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAQAAABIkb+zAAACCklEQVR4Ae2bA6wcURhGb22HtbWc/wuKuIzqNmYZ1oxR27bNOFWcBrURVVFt/fUkkze7WWXvnbzvnHA5Z0xDCCGEEEIyE28l0+UCXkHL7Cu5INPjrUwxxOrjuPyA2lN+4HisvimMjrXkKtS+crVjLVMIsgnqhrLJ5I90lO/OBHyXjiZfMB/qkPNNvsgVlwLkqskXfIQ65Pv8AzSoKTPQoAxgAAMYwAAGMIABDGAAAxjAAAYwgAEMYAADGMAAawEYkmoR4QB0xQe5ZKpHNCBWHw+gUFkW0QCcgf5VBjoYEKsZq2myIHOgfsDLdFvnAmSN7DYZ8foGr3nKFdRwKsAbAYV6U0woaB1yq8IqhwKkG97/u547IOyKP65BK5oe7EgA6sp9f9Z4m+pc4f190FDfpNu6EXA48MlHHRsGZq4J0HD9JcFugEyCIug5U83/FcEXaBbXWQ7weuJryJhda/4QaypPoNmVURYDujbDc2ioY4wx1eRiLtfgpaOtgKo4D83gt3RvLIXmotxqW9tKgDcPmll5C83ZzRYC0B9aOmVUmQO8NvKylAH+klCegNLfTecvCeUJkK3Q0ivbeUzMgNLBAAYwgAFvoA75pvLdeiwLnQpYaPLFa+PS7fdobfJHNkb2AQh/p/lKNB9B8YnVl2O2HwKSY7H6phjQGtPsPIaF85iWbd4nhBBCCCE/AVowSK14WussAAAAAElFTkSuQmCC)"></div>
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" title="Click to add Files">
+            <label class="custom-file-label">Choose file</label>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<script src="/static/js/copy.js"></script>
+<script src="/static/js/upload.js"></script>
+{% endblock %}

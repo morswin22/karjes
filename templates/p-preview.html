@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/css/md.css">
+{% endblock %}
+
+{% block body %}
+<h3>{{title}}</h3>
+
+<hr>
+<div id="preview" class="markdown"></div>
+<hr>
+
+<div class="row">
+    <div class="col-6">
+        <form action="/panel/edit/{{id}}" method="POST">
+            <textarea name="content" hidden>{{original}}</textarea>
+            <button type="submit" class="btn btn-outline-primary w-100" >
+                Return
+            </button>
+        </form> 
+    </div>
+
+    <div class="col-6">
+        <form action="/panel/save/{{id}}" method="POST">
+            <textarea name="content" hidden>{{original}}</textarea>
+            <button type="submit" class="btn btn-primary w-100" >
+                Save
+            </button>
+        </form> 
+    </div>
+</div>
+
+<script>
+    $('#preview').html(`{{markdown}}`.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"'));
+</script>
+{% endblock %}

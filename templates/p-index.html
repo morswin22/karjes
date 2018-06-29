@@ -1,0 +1,166 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<style>
+    .storage-element {
+        display: table;
+        float: left;
+        width: 152px;
+        height: 152px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        text-decoration: none!important;
+        margin: 4px;
+    }
+    .storage-element div {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        background-color: rgba(0,0,0,0);
+        opacity: 0;
+        transition: 300ms background-color;
+    }
+    .storage-element div:hover {
+        background-color: rgba(0,0,0,0.3);
+        opacity: 1;
+        color: #ffffff;
+        cursor:pointer;
+    }
+</style>
+<link rel="stylesheet" href="/static/css/dnd.css">
+<script src="/static/js/dnd.js"></script>
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-10">
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Works</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="false">Books</a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-2">
+        <a href="/panel/logout/">Sign out</a>
+    </div>
+</div>
+<div class="tab-content" id="pills-tabContent">
+  <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+        <a class="storage-element rounded" style="background-image: url('/static/img/add.png'); background-size: 75%; background-position: center;" href="/panel/add/book"></a>
+      {% for book in books %}
+        <a class="storage-element rounded" style="background-image: url('{{book.image}}')" data-toggle="modal" data-target="#editModal{{book.id}}">
+            <div class="rounded">{{book.name}}</div>
+        </a>
+      {% endfor %}
+  </div>
+  <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+        <a class="storage-element rounded" style="background-image: url('/static/img/add.png'); background-size: 75%; background-position: center;" href="/panel/add/work"></a>
+    {% for work in works %}
+      <a class="storage-element rounded" style="background-image: url('{{work.image}}')" data-toggle="modal" data-target="#editModal{{work.id}}">
+          <div class="rounded">{{work.name}}</div>
+      </a>
+    {% endfor %}
+  </div>
+</div>
+{% for book in books %}
+<div class="modal fade" id="editModal{{book.id}}" tabindex="-1" role="dialog" aria-labelledby="editModal{{book.id}}Label" aria-hidden="true">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+    <div class="modal-header">
+    <h5 class="modal-title" id="editModal{{book.id}}Label">{{book.name}}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body">
+        <form method="POST" action="/panel/update/{{book.id}}">
+            <div class="form-group">
+              <input type="text" class="form-control" id="name" name="name" placeholder="Enter name" value="{{book.name}}">
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" id="link" name="image" placeholder="http://karolinajeske.com/static/uploaded/..." value="{{book.image}}">
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <button id="upload_imgs" type="button" class="btn btn-outline-primary w-100" data-toggle="modal" data-target="#uploadModal">
+                        Upload images
+                    </button>   
+                </div>
+                <div class="col-6">
+                    <button type="submit" class="btn btn-primary w-100">Update</button>
+                </div>
+            </div>
+        </form>
+        <div class="text-center my-3"><a href="/panel/gallery/" target="_BLANK">Open image gallery</a></div>
+        <div class="text-center my-3"><a href="/panel/edit/{{book.id}}">Edit content</a></div>
+        <a class="btn btn-outline-danger w-100" href="/panel/delete/{{book.id}}">Delete this</a>
+    </div>
+</div>
+</div>
+</div>
+{% endfor %}
+{% for work in works %}
+<div class="modal fade" id="editModal{{work.id}}" tabindex="-1" role="dialog" aria-labelledby="editModal{{work.id}}Label" aria-hidden="true">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+    <div class="modal-header">
+    <h5 class="modal-title" id="editModal{{work.id}}Label">{{work.name}}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body">
+        <form method="POST" action="/panel/update/{{work.id}}">
+            <div class="form-group">
+              <input type="text" class="form-control" id="name" name="name" placeholder="Enter name" value="{{work.name}}">
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" id="link" name="image" placeholder="http://karolinajeske.com/static/uploaded/..." value="{{work.image}}">
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <button id="upload_imgs" type="button" class="btn btn-outline-primary w-100" data-toggle="modal" data-target="#uploadModal">
+                        Upload images
+                    </button>   
+                </div>
+                <div class="col-6">
+                    <button type="submit" class="btn btn-primary w-100">Update</button>
+                </div>
+            </div>
+        </form>
+        <div class="text-center my-3"><a href="/panel/gallery/" target="_BLANK">Open image gallery</a></div>
+        <div class="text-center my-3"><a href="/panel/edit/{{work.id}}">Edit content</a></div>
+        <a class="btn btn-outline-danger w-100" href="/panel/delete/{{work.id}}">Delete this</a>
+    </div>
+</div>
+</div>
+</div>
+{% endfor %}
+
+<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+    <div class="modal-header">
+    <h5 class="modal-title" id="uploadModalLabel">Drag and Drop Files Here</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body" id="drop-area">
+        <div id="progresses" style="min-height: 250px; background-repeat: no-repeat;background-position: center; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAQAAABIkb+zAAACCklEQVR4Ae2bA6wcURhGb22HtbWc/wuKuIzqNmYZ1oxR27bNOFWcBrURVVFt/fUkkze7WWXvnbzvnHA5Z0xDCCGEEEIyE28l0+UCXkHL7Cu5INPjrUwxxOrjuPyA2lN+4HisvimMjrXkKtS+crVjLVMIsgnqhrLJ5I90lO/OBHyXjiZfMB/qkPNNvsgVlwLkqskXfIQ65Pv8AzSoKTPQoAxgAAMYwAAGMIABDGAAAxjAAAYwgAEMYAADGMAAawEYkmoR4QB0xQe5ZKpHNCBWHw+gUFkW0QCcgf5VBjoYEKsZq2myIHOgfsDLdFvnAmSN7DYZ8foGr3nKFdRwKsAbAYV6U0woaB1yq8IqhwKkG97/u547IOyKP65BK5oe7EgA6sp9f9Z4m+pc4f190FDfpNu6EXA48MlHHRsGZq4J0HD9JcFugEyCIug5U83/FcEXaBbXWQ7weuJryJhda/4QaypPoNmVURYDujbDc2ioY4wx1eRiLtfgpaOtgKo4D83gt3RvLIXmotxqW9tKgDcPmll5C83ZzRYC0B9aOmVUmQO8NvKylAH+klCegNLfTecvCeUJkK3Q0ivbeUzMgNLBAAYwgAFvoA75pvLdeiwLnQpYaPLFa+PS7fdobfJHNkb2AQh/p/lKNB9B8YnVl2O2HwKSY7H6phjQGtPsPIaF85iWbd4nhBBCCCE/AVowSK14WussAAAAAElFTkSuQmCC)"></div>
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" title="Click to add Files">
+            <label class="custom-file-label">Choose file</label>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<script src="/static/js/copy.js"></script>
+<script src="/static/js/upload.js"></script>
+<script>$(document).ready(()=>{$(window).unbind('beforeunload')})</script>
+{% endblock %}

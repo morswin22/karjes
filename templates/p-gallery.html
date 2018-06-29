@@ -1,0 +1,97 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<style>
+    .storage-element {
+        display: table;
+        float: left;
+        width: 152px;
+        height: 152px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        text-decoration: none!important;
+        margin: 4px;
+    }
+    .storage-element div {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        background-color: rgba(0,0,0,0);
+        opacity: 0;
+        transition: 300ms background-color;
+    }
+    .storage-element div:hover {
+        background-color: rgba(0,0,0,0.3);
+        opacity: 1;
+        color: #ffffff;
+        cursor:pointer;
+    }
+</style>
+<link rel="stylesheet" href="/static/css/dnd.css">
+<script src="/static/js/dnd.js"></script>
+{% endblock %}
+
+{% block body %}
+<h3>Image gallery</h3>
+
+<div class="row mb-3">
+    <a class="storage-element rounded" style="background-image: url('/static/img/add.png'); background-size: 75%; background-position: center; cursor: pointer;" data-toggle="modal" data-target="#uploadModal"></a>
+    {% for image in images %}
+    <a class="storage-element rounded" style="background-image: url('/static/uploaded/{{image}}')" data-toggle="modal" data-target="#editModal{{image}}">
+        <div class="rounded">{{image}}</div>
+    </a>
+    {% endfor %}
+</div>
+
+{% for image in images %}
+<div class="modal fade" id="editModal{{image}}" tabindex="-1" role="dialog" aria-labelledby="editModal{{image}}Label" aria-hidden="true">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+    <div class="modal-header">
+    <h5 class="modal-title" id="editModal{{image}}Label">{{image}} <i tabindex="0" data-container="body" data-toggle="popover" data-placement="right" data-content="Link copied to clipboard" class="material-icons" style="cursor: pointer; position: relative; top: 6px;" onclick="copyToClipboard(window.location.protocol + '//' + window.location.host + '/static/uploaded/' + '{{image}}'); setTimeout(function(){$('#'+$(this).attr('aria-describedby')).fadeOut(300, function(){$('#'+$(this).attr('aria-describedby')).remove()}.bind(this))}.bind(this), 750)">link</i></h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body">
+        <form method="POST" action="/panel/gallery/rename/{{image}}">
+            <div class="form-group">
+              <input type="text" class="form-control" name="newname" placeholder="Enter name" value="{{image}}">
+            </div>
+            <button type="submit" class="btn btn-primary mb-2 w-100">Rename</button>
+            <a href="/panel/gallery/delete/{{image}}" class="btn btn-outline-danger w-100">Delete</a>
+        </form>
+    </div>
+</div>
+</div>
+</div>
+{% endfor %}
+
+<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+    <div class="modal-header">
+    <h5 class="modal-title" id="uploadModalLabel">Drag and Drop Files Here</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body" id="drop-area">
+        <div id="progresses" style="min-height: 250px; background-repeat: no-repeat;background-position: center; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAQAAABIkb+zAAACCklEQVR4Ae2bA6wcURhGb22HtbWc/wuKuIzqNmYZ1oxR27bNOFWcBrURVVFt/fUkkze7WWXvnbzvnHA5Z0xDCCGEEEIyE28l0+UCXkHL7Cu5INPjrUwxxOrjuPyA2lN+4HisvimMjrXkKtS+crVjLVMIsgnqhrLJ5I90lO/OBHyXjiZfMB/qkPNNvsgVlwLkqskXfIQ65Pv8AzSoKTPQoAxgAAMYwAAGMIABDGAAAxjAAAYwgAEMYAADGMAAawEYkmoR4QB0xQe5ZKpHNCBWHw+gUFkW0QCcgf5VBjoYEKsZq2myIHOgfsDLdFvnAmSN7DYZ8foGr3nKFdRwKsAbAYV6U0woaB1yq8IqhwKkG97/u547IOyKP65BK5oe7EgA6sp9f9Z4m+pc4f190FDfpNu6EXA48MlHHRsGZq4J0HD9JcFugEyCIug5U83/FcEXaBbXWQ7weuJryJhda/4QaypPoNmVURYDujbDc2ioY4wx1eRiLtfgpaOtgKo4D83gt3RvLIXmotxqW9tKgDcPmll5C83ZzRYC0B9aOmVUmQO8NvKylAH+klCegNLfTecvCeUJkK3Q0ivbeUzMgNLBAAYwgAFvoA75pvLdeiwLnQpYaPLFa+PS7fdobfJHNkb2AQh/p/lKNB9B8YnVl2O2HwKSY7H6phjQGtPsPIaF85iWbd4nhBBCCCE/AVowSK14WussAAAAAElFTkSuQmCC)"></div>
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" title="Click to add Files">
+            <label class="custom-file-label">Choose file</label>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<script src="/static/js/copy.js"></script>
+<script src="/static/js/upload.js"></script>
+<script>$(document).ready(()=>{$(window).unbind('beforeunload')});
+        $(function () {
+            $('[data-toggle="popover"]').popover()
+          });
+</script>
+{% endblock %}
