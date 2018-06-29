@@ -61,7 +61,7 @@ function getRegex($pattern){
     $pattern = preg_replace('#\(/\)#', '/?', $pattern);
 
     // Create capture group for ":parameter"
-    $allowedParamChars = '[a-zA-Z0-9\_\-.]+';
+    $allowedParamChars = '[a-zA-Z0-9\_\-.%()]+';
     $pattern = preg_replace(
         '/:(' . $allowedParamChars . ')/',   # Replace ":parameter"
         '(?<$1>' . $allowedParamChars . ')', # with "(?<parameter>[a-zA-Z0-9\_\-]+)"

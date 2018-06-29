@@ -83,8 +83,8 @@ route('/panel/gallery/', function() {
 route('/panel/gallery/rename/:oldname', function($args) {
     require_logged();
     if (isset($_POST['newname']) and !empty(trim($_POST['newname']))) {
-        $old = 'static/uploaded/'.$args['oldname'];
-        $new = 'static/uploaded/'.trim($_POST['newname']);
+        $old = 'static/uploaded/'.urldecode($args['oldname']);
+        $new = 'static/uploaded/'.trim(urldecode($_POST['newname']));
         if (is_file($old) and !is_file($new)) {
             rename($old, $new);
         }
@@ -95,13 +95,13 @@ route('/panel/gallery/rename/:oldname', function($args) {
 route('/panel/gallery/delete/:name', function($args) {
     require_logged();
     if (isset($_POST['confirm'])) {
-        $f = 'static/uploaded/'.$args['name'];
+        $f = 'static/uploaded/'.urldecode($args['name']);
         if (is_file($f)) {
             unlink($f);
         }
         redirect('/panel/gallery/');
     } else {
-        render('p-img-confirm.html', array('name'=>$args['name']));
+        render('p-img-confirm.html', array('name'=>urldecode($args['name'])));
     }
 });
 

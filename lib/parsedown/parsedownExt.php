@@ -4,7 +4,7 @@ require_once "parsedown.php";
 
 class ParsedownExtended extends Parsedown {
 
-    private $regex = '/{([-:.\/_a-zA-Z\d][^{}]+)}/m';
+    private $regex = '/slider\(([-:.\/_a-zA-Z\d][^{}]+)\)/m';
 
     public function textExtended($text) {
         preg_match_all($this->regex, $text, $matches);
